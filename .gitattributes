@@ -1,0 +1,2 @@
+# CSV fixtures retain trailing whitespace intentionally to test input normalization.
+tests/data/*.csv whitespace=-blank-at-eol
