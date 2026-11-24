@@ -54,8 +54,11 @@ def test_falha_de_arquivo_fica_na_entrada_e_nao_interrompe_proximo(tmp_path):
     assert (settings.input_dir / "a-invalido.csv").is_file()
     assert (settings.processed_dir / "b-valido.csv").is_file()
     assert result.stats["files_failed"] == 1
-    failed_audit = next(settings.logs_dir.glob("audit_batch_*.jsonl"))
-    assert "file_processing_failed" in failed_audit.read_text(encoding="utf-8")
+    audit_logs = list(settings.logs_dir.glob("audit_batch_*.jsonl"))
+    assert any(
+        '"event": "file_processing_failed"' in path.read_text(encoding="utf-8")
+        for path in audit_logs
+    )
 
 
 def test_arquivo_com_nome_duplicado_nao_sobrescreve_o_arquivado(tmp_path):
