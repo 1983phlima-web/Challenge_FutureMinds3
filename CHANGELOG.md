@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 — Correção do diretório raiz
+
+- Alterado o caminho-base padrão de instalação, configuração e exemplos para `C:\FutureMinds`.
+- Atualizados critérios de implantação, especificação e diagramas para refletir o mesmo diretório.
+- Mantida a configuração de subpastas `Input` e `Processados` sob a raiz do projeto.
+
 ## 1.0.0 — Release 1.0
 
 - Nova V2 publicada como pacote independente `challenge-futureminds3`.

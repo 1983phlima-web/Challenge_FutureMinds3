@@ -3,7 +3,7 @@
 Versão da aplicação: **V2** · Release: **1.0.0** · Escopo: Processo 1 (Pré-processamento) e Processo 2 (Performer com ciclo `_loop`)
 
 ## 1. Objetivo
-Automatizar a triagem de reclamações recebidas como arquivos CSV em `C:\Challenge\Input\`: descobrir os arquivos suportados por extensão e contrato, processá-los sequencialmente, classificar a **tensão** com IA apoiada por um Motor de Regras, montar o **código de fila**, ordenar a fila e recomendar a **resposta** (política aprovada quando existir). Arquivos concluídos são arquivados em `Processados\` somente após os logs e artefatos serem gravados. Itens sem resposta entram em um ciclo de reprocessamento (`_loop`).
+Automatizar a triagem de reclamações recebidas como arquivos CSV em `C:\FutureMinds\Input\`: descobrir os arquivos suportados por extensão e contrato, processá-los sequencialmente, classificar a **tensão** com IA apoiada por um Motor de Regras, montar o **código de fila**, ordenar a fila e recomendar a **resposta** (política aprovada quando existir). Arquivos concluídos são arquivados em `Processados\` somente após os logs e artefatos serem gravados. Itens sem resposta entram em um ciclo de reprocessamento (`_loop`).
 
 ## 2. Premissas e pontos em aberto (validar com o negócio)
 | # | Premissa adotada | Impacto se diferente |
@@ -51,7 +51,7 @@ Automatizar a triagem de reclamações recebidas como arquivos CSV em `C:\Challe
 ### 5.1 Entrada
 `id,data_reclamacao,canal,texto_reclamacao,produto,status` · separador `,` · aspas duplas em textos com vírgula · datas `YYYY-MM-DD`.
 
-O diretório padrão é `C:\Challenge\Input\`; a seleção usa `*.csv`, ordenada pelo nome, sem depender de um nome fixo. Arquivos não CSV são ignorados. Uma origem que falhou permanece em `Input\`; entradas concluídas vão a `C:\Challenge\Processados\` depois da geração dos artefatos e registros de auditoria.
+O diretório padrão é `C:\FutureMinds\Input\`; a seleção usa `*.csv`, ordenada pelo nome, sem depender de um nome fixo. Arquivos não CSV são ignorados. Uma origem que falhou permanece em `Input\`; entradas concluídas vão a `C:\FutureMinds\Processados\` depois da geração dos artefatos e registros de auditoria.
 
 ### 5.2 Artefatos
 | Artefato | Local | Conteúdo |
@@ -134,7 +134,7 @@ Saída `0` significa que todos os lotes foram concluídos (`_ok`).
 Log operacional (`preprocess.log`, `performer.log`; JSON, rotação 10 MB×10). Auditoria `audit_*.jsonl`: `row_rejected`, `row_classified`, `row_queued`, `row_answered`, `row_failed` (com `ciclo`). Estatísticas `stats_*.json`. Relatório: 1) Resumo · 2) Tendências (volume m/m, mix de tensão, variação por produto, cobertura de política) · 3) Top Riscos (itens, concentração canal×produto, termos; no Performer: Alta sem política e pendentes).
 
 ## 9. Segurança e conformidade
-Máscara de PII antes da IA; CSV nunca alterado na origem; segredos fora do código e do YAML; defesa contra *prompt injection*; ACL restrita em `C:\Challenge`; retenção definida para `Logs\` (IDs e justificativas, sem o texto integral).
+Máscara de PII antes da IA; CSV nunca alterado na origem; segredos fora do código e do YAML; defesa contra *prompt injection*; ACL restrita em `C:\FutureMinds`; retenção definida para `Logs\` (IDs e justificativas, sem o texto integral).
 
 ## 10. Estratégia de testes
 - **Corpus de 500 textos distintos** (`tests/corpus.py`) de reclamações bancárias em pt-BR, gerado de forma determinística e **rotulado por construção** (tensão, produto, canal e status). Cada texto combina: abertura (tom) + frase de canal + fato específico do produto + frase de status + dado pessoal opcional + fechamento.
@@ -151,7 +151,7 @@ Máscara de PII antes da IA; CSV nunca alterado na origem; segredos fora do cód
 - **Limite honesto:** o corpus é sintético e o Motor de Regras de exemplo foi escrito com vocabulário bancário geral, mas pelo mesmo autor: os números medem **regressão e fluxo**, não o desempenho em produção. Antes do Go-Live, rotule por humanos uma amostra de reclamações **reais** e meça a acurácia do modelo.
 
 ## 11. Implantação
-Windows Task Scheduler: `challenge run-all --config C:\Challenge\config\settings.yaml` (recomenda-se repetir a tarefa periodicamente para consumir `_loop`). Lock órfão (`*.lock`) após queda: remover manualmente após confirmar que não há processo ativo.
+Windows Task Scheduler: `challenge run-all --config C:\FutureMinds\config\settings.yaml` (recomenda-se repetir a tarefa periodicamente para consumir `_loop`). Lock órfão (`*.lock`) após queda: remover manualmente após confirmar que não há processo ativo.
 
 ## 12. Riscos
 | Risco | Mitigação |

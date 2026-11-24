@@ -22,7 +22,7 @@ class Settings:
     """Parâmetros imutáveis de execução."""
 
     # Pastas e arquivos
-    base_dir: Path = Path(r"C:\Challenge")
+    base_dir: Path = Path(r"C:\FutureMinds")
     input_subdir: str = "Input"
     processed_subdir: str = "Processados"
     input_filename: str = "dataset_challenge.csv"

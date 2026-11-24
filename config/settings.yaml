@@ -1,5 +1,5 @@
 # Caminhos relativos de rules_file/policy_file partem desta pasta.
-base_dir: C:\Challenge
+base_dir: C:\FutureMinds
 input_subdir: Input
 processed_subdir: Processados
 input_filename: dataset_challenge.csv

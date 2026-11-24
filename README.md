@@ -1,4 +1,4 @@
-# Challenge_FutureMinds3 — V2 · Release 1.0
+# Challenge_FutureMinds3 — V2 · Release 1.0.1
 
 Aplicação de triagem de reclamações com IA, processamento sequencial de arquivos CSV e observabilidade estruturada. O pacote mantém provedores intercambiáveis e segue a arquitetura de domínio, aplicação, infraestrutura e adaptadores.
 
@@ -34,7 +34,7 @@ futureminds check        # validação de configuração e ambiente
 
 ## Pastas e arquivos gerados
 ```
-C:\Challenge\
+C:\FutureMinds\
   Input\      *.csv (entrada; qualquer nome, contrato CSV documentado abaixo)
   Processados\ *.csv (arquivos concluídos, movidos somente após logs e artefatos)
   Fila\       processadas_<ts>.csv · rejeitadas_<ts>.csv
@@ -45,7 +45,7 @@ C:\Challenge\
 
 `preprocess` e `run-all` consideram todos os arquivos regulares com extensão `.csv` (sem distinção entre maiúsculas e minúsculas), ordenados pelo nome e processados um por vez. Cada arquivo deve conter `id,data_reclamacao,canal,texto_reclamacao,produto,status`. Arquivos concluídos são movidos para `Processados` após a geração dos logs, estatísticas e artefatos. Em caso de falha de leitura, schema ou processamento, o CSV permanece em `Input` para correção e nova tentativa; arquivos que não sejam CSV são ignorados.
 
-O caminho-base padrão é `C:\Challenge`; pode ser alterado com `--base-dir` ou `base_dir` no YAML. `input_subdir` e `processed_subdir` são configuráveis.
+O caminho-base padrão é `C:\FutureMinds`; pode ser alterado com `--base-dir` ou `base_dir` no YAML. `input_subdir` e `processed_subdir` são configuráveis.
 
 ## Ciclo `_loop` (itens sem resposta)
 | Situação | Resultado |
@@ -61,8 +61,8 @@ Códigos de saída: `0` tudo concluído · `1` há `_loop`/`_nok` · `2` entrada
 
 ## Operação
 ```powershell
-futureminds run-all --config C:\Challenge\config\settings.yaml
-schtasks /Create /SC HOURLY /TN "Challenge_FutureMinds3" /TR "C:\Challenge\.venv\Scripts\futureminds.exe run-all --config C:\Challenge\config\settings.yaml"
+futureminds run-all --config C:\FutureMinds\config\settings.yaml
+schtasks /Create /SC HOURLY /TN "Challenge_FutureMinds3" /TR "C:\FutureMinds\.venv\Scripts\futureminds.exe run-all --config C:\FutureMinds\config\settings.yaml"
 ```
 Lock órfão (`*.lock` em `Output\`) após queda: apague só depois de confirmar que nenhum processo está ativo.
 
@@ -70,9 +70,9 @@ Lock órfão (`*.lock` em `Output\`) após queda: apague só depois de confirmar
 ```powershell
 pytest -q                 # suíte completa (inclui o dataset de 500 casos com gabarito)
 ruff check src tests ; mypy src
-python tests\dataset_factory.py --valid 500 --invalid 40 --out C:\Challenge\Input\validacao.csv --expected gabarito.csv
+python tests\dataset_factory.py --valid 500 --invalid 40 --out C:\FutureMinds\Input\validacao.csv --expected gabarito.csv
 ```
-`tests\data\dataset_500.csv` traz **500 reclamações bancárias distintas** mais 40 linhas inválidas. `dataset_500_expected.csv` é o gabarito: fila esperada, motivo da rejeição e cenário por linha. O gerador é `tests\corpus.py`. Copie o CSV para `C:\Challenge\Input\validacao.csv` para uma validação ponta a ponta com a IA real.
+`tests\data\dataset_500.csv` traz **500 reclamações bancárias distintas** mais 40 linhas inválidas. `dataset_500_expected.csv` é o gabarito: fila esperada, motivo da rejeição e cenário por linha. O gerador é `tests\corpus.py`. Copie o CSV para `C:\FutureMinds\Input\validacao.csv` para uma validação ponta a ponta com a IA real.
 
 ## Validação da implantação
 ```powershell

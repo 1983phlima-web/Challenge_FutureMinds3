@@ -1,6 +1,17 @@
+from pathlib import Path
+
 import pytest
 
 from challenge.config import ConfigError, Settings
+
+
+def test_default_base_dir_futureminds():
+    assert Settings().base_dir == Path(r"C:\FutureMinds")
+    config_path = Path(__file__).parents[1] / "config" / "settings.yaml"
+    settings = Settings.load(config_path)
+    assert settings.base_dir == Path(r"C:\FutureMinds")
+    assert settings.input_dir == Path(r"C:\FutureMinds") / "Input"
+    assert settings.processed_dir == Path(r"C:\FutureMinds") / "Processados"
 
 
 def test_defaults_e_yaml(tmp_path, monkeypatch):

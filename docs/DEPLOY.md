@@ -9,9 +9,9 @@ Objetivo: preparar o ambiente e **provar**, em portões sequenciais (Gates), que
 | Sistema | Windows 10/11 ou Server, 64 bits | `winver` |
 | Python | 3.11+ com `venv` e `pip` | `py -3.11 --version` |
 | Pacotes | `pandas`, `httpx`, `PyYAML` (+ `pytest`, `ruff`, `mypy` para os testes) | `pip install -e ".[dev]"` |
-| Pastas | `C:\Challenge\Input` e `C:\Challenge\Processados` com leitura/escrita para a conta que executa a tarefa | Gate 2 |
+| Pastas | `C:\FutureMinds\Input` e `C:\FutureMinds\Processados` com leitura/escrita para a conta que executa a tarefa | Gate 2 |
 | Insumos de negócio | `motor_regras.txt` e `politica.txt` reais em `config\` | Gate 2 |
-| Disco | ≥ 2 GB livres em `C:\Challenge` (entrada, arquivo, logs, relatórios e CSVs) | Gate 2 |
+| Disco | ≥ 2 GB livres em `C:\FutureMinds` (entrada, arquivo, logs, relatórios e CSVs) | Gate 2 |
 | Conta de serviço | Usuário dedicado para o Task Scheduler, com "Log on as a batch job" | Gate 6 |
 
 ### 1.2 Específicos do StackSpot AI
@@ -72,7 +72,7 @@ A linha `golden:tensao` mostra a matriz de divergências (esperado→obtido), po
 **Limite:** o corpus é sintético. Antes do Go-Live, rotule por humanos uma amostra de reclamações **reais** e compare (alvo sugerido: ≥ 95% de acordo nos casos Alta).
 
 ### Gate 6 — Piloto em homologação
-1. Copie `tests\data\dataset_500.csv` para `C:\Challenge\Input\homologacao.csv` (ambiente de homologação).
+1. Copie `tests\data\dataset_500.csv` para `C:\FutureMinds\Input\homologacao.csv` (ambiente de homologação).
 2. `futureminds run-all` e confira: `Fila\`, `Output\..._ok.csv` (e eventual `_loop`), `Relatorios\*.html`, `Logs\` e a origem em `Processados\`.
 3. Rode `challenge perform` de novo e confirme que **só** os `_loop` são reprocessados; ao fim não deve restar `_loop` nem `.state.json`.
 4. Agende com a conta de serviço: `schtasks /Create /SC HOURLY /TN "Challenge_FutureMinds3" /TR "...\futureminds.exe run-all --config ...\settings.yaml" /RU <conta>`; valide uma execução agendada (as variáveis de ambiente precisam existir **para essa conta**).
